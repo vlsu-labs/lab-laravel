@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\CardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +18,14 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', 'App\Http\Controllers\ProductsController@index');
+
+Route::get('/card/add/{id}', 'App\Http\Controllers\CardController@add');
+Route::get('/card', 'App\Http\Controllers\CardController@index');
+
+
+Route::resource('products', ProductsController::class);
+
+
+Route::get('/', function () {
+    return view('welcome');
+});

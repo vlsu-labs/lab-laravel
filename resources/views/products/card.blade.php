@@ -1,9 +1,16 @@
-@extends('layout')
+@extends('layout.app')
 @section('title', 'Products')
 @section('content')
-
-<div class="container products">
- <div class="row">
+<div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2>Edit Product</h2>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-primary" href="{{ route('products.index') }}"> Back</a>
+            </div>
+        </div>
+    </div>
    @foreach($products as $product)
    <div class="col-xs-18 col-sm-6 col-md-3">
      <div class="thumbnail">
@@ -12,12 +19,10 @@
          <h4>{{ $product->name }}</h4>
          <p>{{ \Illuminate\Support\Str::limit(strtolower($product->description), 50) }}</p>
          <p><strong>Price: </strong> {{ $product->price }}$</p>
-         <p class="btn-holder"><a href="{{ url('add-to-cart/'.$product->id) }}" class="btn btn-warning btn-block text-center" role="button">Add to cart</a> </p>
-       </div>
+        </div>
      </div>
    </div>
    @endforeach
  </div>
-</div>
 
 @endsection
