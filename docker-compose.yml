@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+    - ./:/var/www/
+    - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+    - ./certbot/www:/var/www/certbot/:ro
+    - ./certbot/conf/:/etc/nginx/ssl/:ro
+    ports:
+    - 8080:80
+    - 443:443
+    depends_on:
+    - app
+    container_name: lab_nginx
+
+  app:
+    build: 
+      context: .
+      dockerfile: _docker/app/Dockerfile
+
+    volumes:
+    - ./:/var/www/
+    depends_on:
+        - db
+    container_name: lab_app
+
+  db:
+    image: mysql:8.0.23
+    restart: always
+    volumes:
+    - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: market
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+    - 8101:3306
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: lab_db
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+    - ./certbot/www/:/var/www/certbot/:rw
+    - ./certbot/conf/:/etc/nginx/ssl/:rw
+    container_name: lab_cert
